@@ -1,7 +1,5 @@
 package org.aliostad.uberbenchmarker
 
-import java.io.File
-
 case class CommandParameters(
                               url: String = "",
                               logFile: String = "",

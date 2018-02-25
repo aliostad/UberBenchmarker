@@ -6,7 +6,10 @@ scalaVersion := "2.12.4"
 
 libraryDependencies += "org.scalaz" %% "scalaz-core" % "7.2.18"
 libraryDependencies += "com.github.scopt" %% "scopt" % "3.6.0"
+libraryDependencies += "io.monix" %% "monix" % "2.3.3"
+libraryDependencies += "com.softwaremill.sttp" %% "core" % "1.1.6"
 libraryDependencies += "org.scalatest" %% "scalatest" % "3.0.0" % "test"
+
 
 lazy val root = (project in file(".")).
   enablePlugins(BuildInfoPlugin).

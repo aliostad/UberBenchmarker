@@ -45,4 +45,11 @@ class CommandParsingTests extends FlatSpec {
     assert(cp.get.isDryRun)
   }
 
+  "Command params" must "set suffle correctly " in {
+    val cp = CommandParameters.parse(List("-u", "shua", "-U"))
+    assert(cp.get.shuffleData)
+  }
+
+
+
 }
