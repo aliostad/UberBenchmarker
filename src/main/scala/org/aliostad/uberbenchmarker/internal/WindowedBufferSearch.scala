@@ -14,19 +14,16 @@ class WindowedBufferSearch(bytes: Array[Byte]) {
     var matchBytes = asciiSymbols.getBytes("ascii")
 
     def byteArraysEqual(b1: Array[Byte], b2: Array[Byte]): Boolean = {
-
-      if (b1.length != b2.length)
-        return false
-
-      if (b1.length == 0)
-        return true
-
-
-      for (i <- b1.indices)
-        if (b1(i) != b2(i))
-          return false
-
-      true
+      b1.length match {
+        case b if b != b2.length => false
+        case 0 => false
+        case _ => {
+          for (i <- b1.indices)
+            if (b1(i) != b2(i))
+              return false
+          true
+        }
+      }
     }
 
     for(w <- getWindows(matchBytes.length))

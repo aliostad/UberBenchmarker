@@ -17,4 +17,10 @@ class BufferSearchTest extends FlatSpec{
     var search = new WindowedBufferSearch(text.getBytes)
     assert(search.find("This one?") > 0)
   }
+
+  "Buffer search" must "return -1 if bytes of interest not found" in {
+    var search = new WindowedBufferSearch(text.getBytes)
+    assert(search.find("This one?!") == -1)
+  }
+
 }
