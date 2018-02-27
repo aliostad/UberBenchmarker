@@ -8,7 +8,7 @@ class RandomValueProviderTests extends FlatSpec {
 
   class Detergent(i: Int, d: Double) extends RandomGen {
 
-    val notAGuid = "ThisIsNotAGuid"
+    val aGuid = "ThisIsNotAGuid"
     var lastIntMin: Option[Int] = None
     var lastIntMax: Option[Int] = None
     var lastDoubleMin: Option[Double] = None
@@ -27,7 +27,7 @@ class RandomValueProviderTests extends FlatSpec {
       d
     }
 
-    override def getRandomGuid: String = notAGuid
+    override def getRandomGuid: String = aGuid
   }
 
   implicit val detergent: Detergent = new Detergent(42, 4.2)
@@ -68,7 +68,7 @@ class RandomValueProviderTests extends FlatSpec {
     val mapin = Map(key -> "")
     val rvp = new RandomValueProvider()
     val mapout = rvp.provide(anyOddIndex, mapin)
-    assert(mapout(key) == detergent.notAGuid)
+    assert(mapout(key) == detergent.aGuid)
   }
 
 }
