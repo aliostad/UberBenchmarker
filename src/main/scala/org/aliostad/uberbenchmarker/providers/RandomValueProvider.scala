@@ -2,7 +2,6 @@ package org.aliostad.uberbenchmarker.providers
 
 import org.aliostad.uberbenchmarker.internal.RandomGen
 
-import scala.util.matching.Regex
 
 class RandomValueProvider(implicit val randomGen: RandomGen) extends ValueProvider {
 
