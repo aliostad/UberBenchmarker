@@ -9,9 +9,7 @@ class WindowedBufferSearch(bytes: Array[Byte]) {
       yield (i, bytes.slice(i, i+size))
   }
 
-  def find(asciiSymbols: String): Int = {
-
-    var matchBytes = asciiSymbols.getBytes("ascii")
+  def find(matchBytes: Array[Byte]): Int = {
 
     def byteArraysEqual(b1: Array[Byte], b2: Array[Byte]): Boolean = {
       b1.length match {
