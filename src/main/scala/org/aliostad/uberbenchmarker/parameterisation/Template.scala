@@ -9,25 +9,32 @@ class Template(val headers: Map[String, String], val body: Either[String, Array[
 
 object Template {
 
-  val httpEmptyLine: Array[Byte] = "\r\n\r\n".getBytes("ascii")
+  val httpEmptyLine: Array[Byte] = "\r\n\r\n".getBytes("UTF-8")
 
   def apply(path: String): Template = {
 
     var bytes = Files.readAllBytes(Paths.get(path))
     var wbs = new WindowedBufferSearch(bytes)
+
+    def isText(bbs: Array[Byte]): Boolean = {
+      val subset = bbs.take(500)
+      subset.count(b => b >= 32 && b < 125) * 1.0 / subset.length > 0.5
+    }
+
+    def getBody(bbs: Array[Byte]) : Either[String, Array[Byte]] = {
+      if(isText(bbs))
+        Left(new String(bbs, "UTF-8"))
+      else
+        Right(bbs)
+    }
+
     wbs.find(httpEmptyLine) match {
       case -1 => new Template(HeaderParser.parseHeaders(bytes), Right(Array[Byte]()))
-      case 0 => new Template(Map[String, String](), Right(Array[Byte]()))
+      case 0 => new Template(Map[String, String](), getBody(bytes.slice(httpEmptyLine.length, bytes.length)))
       case i => {
         var headerBytes = bytes.slice(0, i)
         var body = bytes.slice(i+httpEmptyLine.length, bytes.length)
-        try {
-          new Template(HeaderParser.parseHeaders(headerBytes), Left(new String(body, "utf-8")))
-        }
-        catch {
-          case _: Throwable => // not a string
-            new Template(HeaderParser.parseHeaders(headerBytes), Right(body))
-        }
+        new Template(HeaderParser.parseHeaders(headerBytes), getBody(body))
       }
     }
   }
