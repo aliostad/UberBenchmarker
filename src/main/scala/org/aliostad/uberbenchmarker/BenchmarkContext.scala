@@ -3,11 +3,15 @@ package org.aliostad.uberbenchmarker
 import java.io.File
 import java.util.Calendar
 
+import org.aliostad.uberbenchmarker.parameterisation.Template
+
 case class BenchmarkContext(
-          commandParameters: CommandParameters,
-          logFile: File,
-          reportFolder: File,
-          responseFolder: Option[File]
+           commandParameters: CommandParameters,
+           logFile: File,
+           reportFolder: File,
+           responseFolder: Option[File],
+           template: Option[Template]
+
                            )
 
 object BenchmarkContext {
@@ -38,7 +42,7 @@ object BenchmarkContext {
       if (!logFile.exists())
         logFile.createNewFile()
 
-      // log file ________________________
+      // response folder ________________________
       var responseFolder = if (cp.saveResponse) {
         cp.responseFolder match {
           case "" => Some(new File(responseFolderName))
@@ -48,9 +52,19 @@ object BenchmarkContext {
 
       responseFolder.foreach(x => if (!x.exists()) x.mkdir())
 
+      // template ________________________
+      val template = if(cp.templateFile.length == 0) None else
+        Some(Template(cp.templateFile))
+
+      cp.
 
 
-      Left(BenchmarkContext(cp, logFile, reportFolder, responseFolder))
+
+      Left(BenchmarkContext(cp,
+        logFile,
+        reportFolder,
+        responseFolder,
+        template))
 
 
     }

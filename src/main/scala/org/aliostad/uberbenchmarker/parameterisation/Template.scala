@@ -2,6 +2,7 @@ package org.aliostad.uberbenchmarker.parameterisation
 
 import java.nio.file.{Files, Paths}
 import org.aliostad.uberbenchmarker.internal.{HeaderParser, WindowedBufferSearch}
+import org.aliostad.uberbenchmarker._
 
 class Template(val headers: Map[String, String], val body: Either[String, Array[Byte]]) {
 
@@ -9,7 +10,7 @@ class Template(val headers: Map[String, String], val body: Either[String, Array[
 
 object Template {
 
-  val httpEmptyLine: Array[Byte] = "\r\n\r\n".getBytes("UTF-8")
+  val httpEmptyLine: Array[Byte] = "\r\n\r\n".getBytes(DefaultEncoding)
 
   def apply(path: String): Template = {
 
@@ -23,7 +24,7 @@ object Template {
 
     def getBody(bbs: Array[Byte]) : Either[String, Array[Byte]] = {
       if(isText(bbs))
-        Left(new String(bbs, "UTF-8"))
+        Left(new String(bbs, DefaultEncoding))
       else
         Right(bbs)
     }
